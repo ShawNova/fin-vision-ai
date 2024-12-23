@@ -50,7 +50,7 @@ The project aims to develop a multimodal AI system that integrates text-to-image
 
 # 1-Month Plan
 
-| Week       | Task                                      | Deliverableds                                                |
+| Week       | Task                                      | Deliverables                                                 |
 | ---------- | ----------------------------------------- | :----------------------------------------------------------- |
 | **Week 1** | Data Preparation and Model Setup          | - Clean and prepare **financeRAG dataset**. (collecting, cleaning, feature engineering). <br />- Develop RAG pipeline (retrieval + GPT fine-tuning).<br />- Baseline model setup for submission. |
 | **Week 2** | Multimodal Core Development + Fine-tuning | -  Integrate RAG with GPT for financial Q&A. <br />- Develop text-to-image generation (ControlNet/Stable Diffusion).. <br />- Perform baseline submissions to Kaggle. |
