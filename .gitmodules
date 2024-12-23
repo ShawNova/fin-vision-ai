@@ -1,0 +1,3 @@
+[submodule "src/submodule/financerag"]
+	path = src/submodule/financerag
+	url = git@github.com:linq-rag/FinanceRAG.git
