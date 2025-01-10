@@ -66,11 +66,25 @@ Develop a **retrieval and re-ranking system** to:
 Resources
 
 - financial_phrasebank: [takala/financial_phrasebank · Datasets at Hugging Face](https://huggingface.co/datasets/takala/financial_phrasebank)
-- FinanceRAG: [Linq-AI-Research/FinanceRAG · Datasets at Hugging Face](https://huggingface.co/datasets/Linq-AI-Research/FinanceRAG?row=1)![image-20241223144017556](E:\personal\projects\fin-vision-ai\docs\figures\image-20241223144017556.png)
+- FinanceRAG: [Linq-AI-Research/FinanceRAG · Datasets at Hugging Face](https://huggingface.co/datasets/Linq-AI-Research/FinanceRAG?row=1)![image-20241223144017556](figures\image-20241223144017556.png)
 
 
 
+## Data Pre-processing
 
+#### **1. Preprocessing: Enhance Query Understanding and Corpus Preparation**
+
+- Query Expansion:
+  - Use techniques like paraphrasing, keyword extraction, and hypothetical document creation for more robust query representations. 
+  - These can be implemented with models like GPT-4 or fine-tuned LLMs.
+- Corpus Summarization:
+  - Summarize large documents or extract key tables using GPT-4-based summarizers to reduce redundancy and improve retrieval efficiency.
+- Markdown Clean-up:
+  - Remove markdown, invalid bytes, and punctuation from the corpus, while truncating overly long texts for consistency.
+- Query Decomposition:
+  - Decompose complex queries into simpler sub-queries to match multiple perspectives of the corpus.
+- Table converting
+  - 
 
 
 
