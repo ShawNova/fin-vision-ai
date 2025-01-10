@@ -10,3 +10,5 @@ openai~=1.47.1
 faiss-cpu
 numpy
 # faiss-gpu # platform linux only
+markdown
+beautifulsoup4
