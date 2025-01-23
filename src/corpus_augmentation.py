@@ -4,6 +4,8 @@ import re
 from markdown import markdown
 from bs4 import BeautifulSoup
 
+from prompt import SysPrompts
+
 
 class CorpusAugment:
     @staticmethod
@@ -56,5 +58,64 @@ class CorpusAugment:
         return text
 
     @staticmethod
-    def table_converter(corpus):
-        pass
+    def extract_markdown_tables(text):
+        # Regex pattern to match Markdown tables (handles optional separator rows and last-line edge cases)
+        table_pattern = r'((?:\|[^\n]*?\|\n)+(?:\|[-:|\s]*\|\n)?(?:\|[^\n]*?\|(?:\n|$))+)'
+        matches = re.findall(table_pattern, text)
+        return matches
+
+    @staticmethod
+    def markdown_table_to_plaintext(table_text):
+        # Convert a standard table to plain text
+        lines = table_text.strip().split('\n')
+        # check for the row separater
+        sep_pattern = r'^\|(?:\s*:?-{2,}:?\s*\|)+$'
+        headers = lines[0].strip('|').split('|')
+        if len(lines) > 1 and re.match(sep_pattern, lines[1]): # separater is true
+            data_rows = lines[2:]
+        else:
+            data_rows = lines[1:]
+
+        data = [row.strip('|').split('|') for row in data_rows]
+
+        # check table is standard or not
+        for row in data:
+            if len(headers) != len(row):
+                return None
+
+        output = ["There is a table containing the following information:"]
+        for row in data:
+            row_text = ", ".join(
+                f"{header.strip()}: {cell.strip()}" for header, cell in zip(headers, row))
+            output.append(f"- {row_text}")
+
+        return "\n".join(output)
+
+    @staticmethod
+    def table_converter(text, client=None):
+        tables = CorpusAugment.extract_markdown_tables(text)
+        tables_converted = []
+        text_aug = text
+        for table_text in tables:
+            # rule-based
+            table_text_plain = CorpusAugment.markdown_table_to_plaintext(table_text)
+            # gpt-based
+            if not table_text_plain and client:
+                system_prompt = SysPrompts.table_convert_instructions
+                user_prompt = table_text
+                resp = client.chat.completions.create(
+                    model = os.getenv("OPENAI_MODEL"),
+                    messages=[
+                        {"role": "system", "content": system_prompt},
+                        {"role": "user", "content": user_prompt}
+                    ],
+                    max_tokens=500,
+                    temperature=0
+                )
+                table_text_plain = resp.choices[0].message.content
+            tables_converted.append(table_text if not table_text_plain else table_text_plain)
+        for i in range(len(tables)):
+            text_aug = text_aug.replace(tables[i], tables_converted[i])
+        return text_aug
+
+
