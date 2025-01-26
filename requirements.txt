@@ -12,3 +12,5 @@ numpy
 # faiss-gpu # platform linux only
 markdown
 beautifulsoup4
+python-dotenv
+spacy
