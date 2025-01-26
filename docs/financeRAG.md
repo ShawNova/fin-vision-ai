@@ -74,9 +74,8 @@ Resources
 
 #### **1. Preprocessing: Enhance Query Understanding and Corpus Preparation**
 
-- Query Expansion:
-  - Use techniques like paraphrasing, keyword extraction, and hypothetical document creation for more robust query representations. 
-  - These can be implemented with models like GPT-4 or fine-tuned LLMs.
+Corpus preprocessing
+
 - Corpus Summarization:
   - Summarize large documents or extract key tables using GPT-4-based summarizers to reduce redundancy and improve retrieval efficiency.
 - Markdown Clean-up:
@@ -84,7 +83,38 @@ Resources
 - Query Decomposition:
   - Decompose complex queries into simpler sub-queries to match multiple perspectives of the corpus.
 - Table converting
-  - 
+  - rule-base
+    - regex: recognize table item from text by regex
+    - paraphrasing: convert table item to plain text
+    - add text of table to the origin text
+
+  - gpt-based
+    - system prompt
+    - user prompt with table extracted, furtherly provide more context but only provide table for now.
+
+
+query preprocessing
+
+- Query Expansion:
+  - rule-based
+    - ~~Expand synonyms and abbreviations through non context-aware models like wordnet: worse than using original query~~
+  - gpt-based
+    - Decompose complex queries: provide more prompts
+    - Paraphrase and enrich using external context.
+
+
+
+## Retrieval System
+
+1. **Indexing**:
+   - Use FAISS (Facebook AI Similarity Search) for fast vector-based retrieval.
+   - Encode document chunks using a pre-trained Sentence Transformer (e.g., `all-MiniLM-L6-v2`)
+2. **Embedding**: 
+   - Convert queries into embeddings using the same Sentence Transformer.
+3. **Initial Retrieval**:
+   - Use FAISS to retrieve the top-k most similar document chunks.
+
+
 
 
 
