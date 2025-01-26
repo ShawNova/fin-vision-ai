@@ -4,7 +4,7 @@ import re
 from markdown import markdown
 from bs4 import BeautifulSoup
 
-from prompt import SysPrompts
+from prompt import SysPrompts, ChatClient
 
 
 class CorpusAugment:
@@ -103,16 +103,14 @@ class CorpusAugment:
             if not table_text_plain and client:
                 system_prompt = SysPrompts.table_convert_instructions
                 user_prompt = table_text
-                resp = client.chat.completions.create(
-                    model = os.getenv("OPENAI_MODEL"),
-                    messages=[
-                        {"role": "system", "content": system_prompt},
-                        {"role": "user", "content": user_prompt}
-                    ],
+                table_text_plain = ChatClient.get_first_response_from_openai(
+                    client=client,
+                    model_name=os.getenv("OPENAI_MODEL_TABLE_CONVERTER"),
+                    system_prompt=system_prompt,
+                    user_prompt=user_prompt,
                     max_tokens=500,
                     temperature=0
                 )
-                table_text_plain = resp.choices[0].message.content
             tables_converted.append(table_text if not table_text_plain else table_text_plain)
         for i in range(len(tables)):
             text_aug = text_aug.replace(tables[i], tables_converted[i])
